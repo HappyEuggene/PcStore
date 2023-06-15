@@ -1,0 +1,98 @@
+﻿@using PcStore.Utilities;
+@model PcStore.Models.Item
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Item</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSpec.Frequency)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ItemSpec != null)
+            {
+                @Html.DisplayFor(model => model.ItemSpec.Frequency)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSpec.MemCapacity)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ItemSpec != null)
+            {
+                @Html.DisplayFor(model => model.ItemSpec.MemCapacity)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSpec.MemType)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ItemSpec != null)
+            {
+                @Html.DisplayFor(model => model.ItemSpec.MemType)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSpec.Cores)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ItemSpec != null)
+            {
+                @Html.DisplayFor(model => model.ItemSpec.Cores)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSpec.Power)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ItemSpec != null)
+            {
+                @Html.DisplayFor(model => model.ItemSpec.Power)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.Model)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ItemType != null)
+            {
+                @Html.DisplayFor(model => model.ItemType.Model)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.Manufacture)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ItemType != null)
+            {
+                @Html.DisplayFor(model => model.ItemType.Manufacture)
+            }
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @if (User.IsInRole(Roles.Seller))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit |</a>
+    }
+    <a asp-action="Index">Back to List</a>
+</div>

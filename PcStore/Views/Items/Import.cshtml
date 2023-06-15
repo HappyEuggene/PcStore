@@ -1,0 +1,13 @@
+﻿<div>
+    <h3>Select an excel file to import.</h3>
+</div>
+@using (Html.BeginForm("AddProductExcel", "Product", FormMethod.Post, new { enctype = "multipart/form-data", id = "frm-excel" }))
+{
+    <div style="margin-top: 20px;">
+        Import Excel file:
+        <input type="file" name="fileExcel" id="fileExcel" />
+        <div style="margin-top: 20px;">
+            <input asp-action="Import" class="btn btn-primary" type="submit" value="Download" />
+        </div>
+    </div>
+}

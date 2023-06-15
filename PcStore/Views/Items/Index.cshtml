@@ -1,0 +1,118 @@
+﻿@using PcStore.Utilities;
+@using System.Security.Claims
+@model IEnumerable<PcStore.Models.Item>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (User.IsInRole(Roles.Seller))
+    {
+        <a asp-action="Create">Create New</a>
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemSpec)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemSpec.Frequency)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemType.Manufacture)
+                </td>
+                <td>
+                    @if (User.IsInRole(Roles.Seller) && item.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit | </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete | </a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-controller="Orders" asp-action="Create" asp-route-id="@item.Id">
+                            <button class="btn btn-primary">Buy</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (User.IsInRole(Roles.User))
+{
+    <form asp-action="BecomeSeller">
+        <button class="btn btn-primary">Become a seller</button>
+    </form>
+}
+
+@if (User.IsInRole(Roles.Seller))
+{
+    <form asp-action="Import">
+        <button class="btn btn-primary">Import items</button>
+    </form>
+    <form asp-action="Export">
+        <button class="btn btn-primary">Export items</button>
+    </form>
+}
+
+
+@if (User.IsInRole(Roles.Seller))
+{
+    <div class="container mt-4">
+        <div id="chart1"></div>
+    </div>
+
+
+    @section scripts
+    {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            $.get('/api/Chart/JsonData', function (JsonData) {
+                data = google.visualization.arrayToDataTable(JsonData, false);
+                var option = {
+                    title: "Ratio between orders",
+                    width: 500,
+                    height: 400
+                };
+                chart = new google.visualization.PieChart(document.getElementById('chart1'));
+                chart.draw(data, option);
+
+            })
+        }
+
+
+    </script>
+}
+}
